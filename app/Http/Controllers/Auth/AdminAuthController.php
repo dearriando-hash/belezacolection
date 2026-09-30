@@ -32,12 +32,14 @@ class AdminAuthController extends Controller
         ])->onlyInput('email');
     }
 
-    // Logout Admin
+    // Logout Admin (Aman untuk GET & POST)
     public function logout(Request $request)
     {
         Auth::logout();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/admin/login');
+
+        return redirect()->route('login');
     }
 }
