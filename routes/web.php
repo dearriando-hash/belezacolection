@@ -17,20 +17,20 @@ Route::get('/', [LandingController::class, 'index'])->name('home');
 // Route Pemesanan Pelanggan
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
-// Route Auth Admin (Guest / Sebelum Login)
+// Route Auth Admin (Login & Logout)
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
-// Route Logout (Dapat diakses via GET & POST agar anti-404)
-// Route Logout Admin (Mendukung GET dan POST)
+// Support Logout via GET & POST agar tidak menimbulkan 404/419
 Route::match(['get', 'post'], '/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
 // Route Halaman Admin (Hanya bisa diakses jika sudah Login)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Menu Produk (Lengkap)
+    // Menu Produk
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -38,7 +38,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    // Menu Kategori (Lengkap)
+    // Menu Kategori
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
@@ -53,6 +53,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Menu Pengaturan
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::put('/settings', [SettingController::class, 'update']);
 
 });
 
