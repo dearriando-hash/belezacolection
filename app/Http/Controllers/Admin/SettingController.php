@@ -4,29 +4,44 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        return view('admin.settings.index');
+        // Ambil data admin yang sedang login untuk ditampilkan di form
+        $user = Auth::user();
+        return view('admin.settings.index', compact('user'));
     }
 
     public function update(Request $request)
     {
-        // Validasi input data dari form pengaturan
+        // 1. Validasi input data dari form pengaturan
         $request->validate([
             'shop_name'    => 'nullable|string|max:255',
             'shop_phone'   => 'nullable|string|max:50',
             'shop_tagline' => 'nullable|string|max:255',
             'shop_address' => 'nullable|string',
-            'email'        => 'nullable|email|max:255',
+            'email'        => 'required|email|max:255',
             'password'     => 'nullable|string|min:6',
         ]);
 
-        // Simpan atau proses logika pembaruan data di sini jika menggunakan database/model
-        // Contoh: Setting::updateOrCreate([...]);
+        // 2. Simpan/Update data ke tabel users (untuk akun admin aktif)
+        $user = Auth::user();
+        if ($user) {
+            $user->email = $request->email;
 
-        return redirect()->back()->with('success', 'Pengaturan berhasil diperbarui!');
+            // Jika kolom password diisi, lakukan update password
+            if ($request->filled('password')) {
+                $user->password = Hash::make($request->password);
+            }
+
+            $user->save();
+        }
+
+        // 3. Kembali ke halaman pengaturan dengan pesan sukses
+        return redirect()->back()->with('success', 'Perubahan berhasil disimpan!');
     }
 }
