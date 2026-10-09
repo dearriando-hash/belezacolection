@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SettingController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 // Halaman Utama (Landing Page)
 Route::get('/', [LandingController::class, 'index'])->name('home');
@@ -58,5 +59,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 });
 
-// Redirect /admin ke /admin/login
-Route::redirect('/admin', '/admin/login');
+// Redirect /admin langsung ke dashboard (middleware auth otomatis akan melempar ke login jika belum masuk)
+Route::redirect('/admin', '/admin/dashboard');
+
+// RUTE DARURAT UNTUK PERBAIKAN GAMBAR DI RAILWAY
+Route::get('/run-storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Storage link berhasil dibuat di Railway!';
+});
