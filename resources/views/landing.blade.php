@@ -170,7 +170,7 @@
                 <div class="bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border border-pink-100 flex flex-col justify-between group">
                     <div>
                         <div class="overflow-hidden h-64 bg-slate-100">
-                            <img src="{{ $imageUrl }}" alt="{{ $name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                           <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                         </div>
                         <div class="p-5">
                             <span class="text-xs uppercase bg-pink-100 text-pink-600 font-bold px-3 py-1 rounded-full">
