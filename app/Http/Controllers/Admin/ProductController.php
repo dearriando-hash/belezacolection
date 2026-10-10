@@ -34,8 +34,15 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            // Simpan file gambar langsung ke folder public/uploads
-            $file->move(public_path('uploads'), $filename);
+            
+            // Pastikan folder public/uploads dibuat otomatis jika belum ada di Railway
+            $targetPath = public_path('uploads');
+            if (!file_exists($targetPath)) {
+                mkdir($targetPath, 0755, true);
+            }
+
+            // Simpan file gambar langsung ke public/uploads
+            $file->move($targetPath, $filename);
             $imagePath = 'uploads/' . $filename;
         }
 
@@ -83,7 +90,14 @@ class ProductController extends Controller
 
             $file = $request->file('image');
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('uploads'), $filename);
+            
+            // Pastikan folder public/uploads dibuat otomatis jika belum ada
+            $targetPath = public_path('uploads');
+            if (!file_exists($targetPath)) {
+                mkdir($targetPath, 0755, true);
+            }
+
+            $file->move($targetPath, $filename);
             $data['image'] = 'uploads/' . $filename;
         }
 
