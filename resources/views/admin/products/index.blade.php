@@ -143,7 +143,7 @@
                                     <td class="p-4 pl-6">
                                         <div class="flex items-center gap-3">
                                             @if($product->image)
-                                                <img src="{{ asset('storage/' . $product->image) }}" class="w-12 h-12 object-cover rounded-xl border border-slate-200 shadow-sm">
+                                               <img src="{{ asset($product->image) }}" class="w-12 h-12 object-cover rounded-xl border border-slate-200 shadow-sm">
                                             @else
                                                 <div class="w-12 h-12 bg-slate-100 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 shadow-sm">
                                                     <i class="fas fa-image text-lg"></i>
